@@ -20,7 +20,7 @@ if [ -x "$(command -v brain)" ]; then
   else
     read -p "brain is already installed, but there is a new version available. Do you want to update it? (y/n) " answer
     if [[ $answer =~ ^[Yy]$ ]]; then
-      curl -o brain https://raw.githubusercontent.com/neobrains/brain/$latest_version/brain.sh
+      curl -o brain https://raw.githubusercontent.com/neobrains/brain/main/brain.sh
       chmod +x brain
       check_sudo
       if [ ! -d ~/.brain ]; then
@@ -36,7 +36,7 @@ if [ -x "$(command -v brain)" ]; then
   fi
 else
   latest_version=$(curl -s https://api.github.com/repos/example/brain/releases/latest | grep tag_name | cut -d '"' -f 4)
-  curl -o brain https://raw.githubusercontent.com/neobrains/brain/$latest_version/brain.sh
+  curl -o brain https://raw.githubusercontent.com/neobrains/brain/main/brain.sh
   chmod +x brain
   check_sudo
   if [ ! -d ~/.brain ]; then
