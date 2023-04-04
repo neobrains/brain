@@ -53,7 +53,25 @@ if [ "$1" == "install" ]; then
         usage
         exit 1
     fi
-    curl -sL "https://raw.githubusercontent.com/neobrains/brain/main/$2.sh" | bash
+    curl -sL "https://raw.githubusercontent.com/neobrains/brain/main/$2.sh" | bash -s -i
+    exit 0
+fi
+
+if [ "$1" == "remove" ]; then
+    if [ -z "$2" ]; then
+        usage
+        exit 1
+    fi
+    curl -sL "https://raw.githubusercontent.com/neobrains/brain/main/$2.sh" | bash -s -r
+    exit 0
+fi
+
+if [ "$1" == "update" ]; then
+    if [ -z "$2" ]; then
+        usage
+        exit 1
+    fi
+    curl -sL "https://raw.githubusercontent.com/neobrains/brain/main/$2.sh" | bash -s -u
     exit 0
 fi
 
