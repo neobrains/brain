@@ -44,9 +44,9 @@ fi
 
 if [ "$1" == "install" ]; then
     if [ -z "$2" ]; then
-        echo "Error: No package specified"
+        usage
         exit 1
     fi
-    curl -sL "https://raw.githubusercontent.com/neobrains/brain/main/apps/$2.sh" | bash
+    curl -sL "https://raw.githubusercontent.com/neobrains/brain/main/$2.sh" | bash
     exit 0
 fi
