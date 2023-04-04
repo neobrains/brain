@@ -66,11 +66,11 @@ fi
 
 if [[ $1 =~ (install|update|remove) ]]; then
     if [ "$1" == "install" ]; then
-        action="--install"
+        action="-install"
     elif [ "$1" == "update" ]; then
-        action="--update"
+        action="-update"
     else
-        action="--remove"
+        action="-remove"
     fi
     if [ -z "$2" ]; then
         echo -e "\e[31mError: You must provide a package name to $1\e[0m"
