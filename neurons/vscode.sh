@@ -26,7 +26,7 @@ unpack() {
   curl -o vscode.tar.gz -L "https://code.visualstudio.com/sha/download?build=stable&os=linux-$ARCH"
   echo "Stopping VSCode, if it's running..."
   if pgrep code > /dev/null; then
-    pkill -9 code
+    pkill -9 code || true
   fi
   if [ -d "/opt/VSCode" ]; then
     rm -rf /opt/VSCode-linux-$ARCH
