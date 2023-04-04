@@ -77,13 +77,14 @@ if [[ $1 =~ (install|update|remove) ]]; then
         usage
         exit 1
     fi
-    response=$(curl -sL -w "%{http_code}" "$neurons_git/$2.sh" | bash -s "$action")
-    exit_status=$?
+    curl -sL -w "%{http_code}" "$neurons_git/$2.sh" | bash -s "$action"
+    # response=$()
+    # exit_status=$?
 
-    if [ $exit_status -ne 0 ] || [ "$response" -ne 200 ]; then
-        echo -e "\e[31mError: Failed to download package '$2'. Please check the package name and try again.\e[0m"
-        exit 1
-    fi
+    # if [ $exit_status -ne 0 ] || [ "$response" -ne 200 ]; then
+    #     echo -e "\e[31mError: Failed to download package '$2'. Please check the package name and try again.\e[0m"
+    #     exit 1
+    # fi
     exit 0
 fi
 
