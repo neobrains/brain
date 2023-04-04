@@ -78,11 +78,14 @@ if [[ $1 =~ (install|update|remove) ]]; then
         exit 1
     fi
 
-    response=$(curl -sL -w "%{http_code}" "$neurons_git/$2.sh" | bash -s -- "$action")
+    curl -sL "$neurons_git/$2.sh" | bash -s -- "$action"
     exit_status=$?
 
-    if [ $exit_status -ne 0 ] || [ "$response" -ne 200 ]; then
-        echo -e "\e[31mError: Failed to download package '$2'. Please check the package name and try again.\e[0m"
+    if [ $exit_status -ne 0 ]; then
+        status=$(curl -sL -w "%{http_code}" "$neurons_git/$2.sh" -o /dev/null)
+        if [ "$status" -eq 404 ]; then
+            echo -e "\e[31mError: Package '$2' not found\e[0m"
+        fi
         exit 1
     fi
     exit 0
