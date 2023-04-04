@@ -70,7 +70,7 @@ if [ "$1" == "install" ] || [ "$1" == "update" ] || [ "$1" == "remove" ]; then
         exit 1
     fi
 
-    response=$(curl -sL -w "%{http_code}" "https://raw.githubusercontent.com/neobrains/brain/main/$2.sh" | bash -s "$action")
+    response=$(curl -sL -w "%{http_code}" "https://raw.githubusercontent.com/neobrains/brain/main/neurons/$2.sh" | bash -s "$action")
     exit_status=$?
 
     if [ $exit_status -ne 0 ] || [ $response -ne 200 ]; then
