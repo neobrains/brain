@@ -55,3 +55,7 @@ if [ "$1" == "install" ]; then
     curl -sL "https://raw.githubusercontent.com/neobrains/brain/main/$2.sh" | bash
     exit 0
 fi
+
+# if none of the above commands were used, show error message and call usage function
+echo "Error: Unknown command '$1'"
+usage
