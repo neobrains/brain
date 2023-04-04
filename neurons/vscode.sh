@@ -3,15 +3,15 @@
 set -e
 
 if [ $( uname -m ) == "x86_64" ] ; then 
-   ARCH="x64" 
+  ARCH="x64" 
 elif [ $( uname -m ) == "aarch64" ] ; then 
-   ARCH="arm64" 
+  ARCH="arm64" 
 elif [ $( uname -m ) == "armv7l" ] ; then 
-   ARCH="armhf" 
+  ARCH="armhf" 
 else 
-   echo "Unsupported architecture: $( uname -m )" 
-   exit 1 
- fi
+  echo "Unsupported architecture: $( uname -m )" 
+  exit 1 
+fi
 
 LATEST_VERSION_URL=$( curl -w "%{url_effective}\n" -I -L -s -S "https://code.visualstudio.com/sha/download?build=stable&os=linux-$ARCH" -o /dev/null )
 LATEST_VERSION=$( echo $( echo $LATEST_VERSION_URL | awk -F '/' '{print $6}') | sed -r 's/.*-([0-9]+)\.tar\.gz/\1/' )
