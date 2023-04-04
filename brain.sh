@@ -78,13 +78,7 @@ if [[ $1 =~ (install|update|remove) ]]; then
         exit 1
     fi
 
-    script=$(curl -sL "$neurons_git/$2.sh")
-    if [ "$script" == "404: Not Found" ]; then
-        echo -e "\e[31mError: Failed to download package '$2'. Please check the package name and try again.\e[0m"
-        exit 1
-    fi
-    
-    echo "$script" | bash -s "$action"
+    bash <(curl -fsSL "$neurons_git/$2.sh") "$action"
 
     exit 0
 fi
