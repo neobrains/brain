@@ -2,6 +2,12 @@
 
 set -e
 
+if ! command -v curl &> /dev/null
+then
+    echo -e "\e[31mError: curl is not installed. Please install curl to continue.\e[0m"
+    exit 1
+fi
+
 check_sudo() {
   if ! sudo -v >/dev/null 2>&1; then
     echo "Error: You need to have sudo privileges to install brain"
