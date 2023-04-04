@@ -11,10 +11,10 @@ check_sudo() {
 
 echo "Installing brain..."
 
-if [ -x "$(command -v nb)" ]; then
+if [ -x "$(command -v brain)" ]; then
   latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | grep tag_name | cut -d '"' -f 4)
 
-  if nb --version | grep -q "$latest_version"; then
+  if brain --version | grep -q "$latest_version"; then
     echo "brain is already installed and up-to-date."
     exit 0
   else
@@ -31,9 +31,9 @@ if [ -x "$(command -v nb)" ]; then
     fi
   fi
 else
-  latest_version=$(curl -s https://api.github.com/repos/example/nb/releases/latest | grep tag_name | cut -d '"' -f 4)
+  latest_version=$(curl -s https://api.github.com/repos/example/brain/releases/latest | grep tag_name | cut -d '"' -f 4)
   curl -o brain https://raw.githubusercontent.com/neobrains/brain/$latest_version/brain.sh
-  chmod +x nb
+  chmod +x brain
   check_sudo
   sudo mv brain /usr/local/bin/
   echo "brain installed."
