@@ -9,6 +9,12 @@ Yes , we know you got flatpak, but we wanted to create our own package manager ,
 ## Installation
 
 ```bash
+curl -sL https://neobrains.dev/brain | bash
+```
+
+or
+
+```bash
 curl -sL https://raw.githubusercontent.com/neobrains/brain/main/install.sh | bash
 ```
 

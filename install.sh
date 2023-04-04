@@ -2,54 +2,64 @@
 
 set -e
 
-if ! command -v curl &> /dev/null
-then
-    echo -e "\e[31mError: curl is not installed. Please install curl to continue.\e[0m"
-    exit 1
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+# Variables
+brain_url="https://raw.githubusercontent.com/neobrains/brain/main/brain.sh"
+brain_dir="$HOME/.brain"
+brain_bin="/usr/local/bin/brain"
+
+if ! command -v curl &>/dev/null; then
+  echo -e "${RED}Error: curl is not installed. Please install curl to continue.${NC}"
+  exit 1
 fi
 
 check_sudo() {
   if ! sudo -v >/dev/null 2>&1; then
-    echo "Error: You need to have sudo privileges to install brain"
+    echo -e "${RED}Error: You need to have sudo privileges to install brain${NC}"
     exit 1
   fi
 }
 
-echo "Installing brain..."
+echo -e "Installing brain..."
 
-latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | grep tag_name | cut -d '"' -f 4)
+# Extract latest version from Github API response
+latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | jq -r '.tag_name')
 
-if [ -x "$(command -v brain)" ]; then
-  if brain --version | grep -q "$latest_version"; then
+if [ -x "$brain_bin" ]; then
+  if [[ "$(brain --version)" == *"$latest_version"* ]]; then
     echo "brain is already installed and up-to-date."
     exit 0
   else
     read -p "Brain is already installed, but there is a new version available. Do you want to update it? (y/n) " answer
     if [[ $answer =~ ^[Yy]$ ]]; then
-      curl -o brain https://raw.githubusercontent.com/neobrains/brain/main/brain.sh -L
+      # Download and install latest version of brain
+      curl -o brain "$brain_url" -L
       chmod +x brain
       check_sudo
-      if [ ! -d ~/.brain ]; then
-        mkdir ~/.brain
-      fi
-      printf "$latest_version" > ~/.brain/version
-      sudo mv brain /usr/local/bin/
-      echo "brain has been updated."
+      printf "$latest_version" >"$brain_dir/version"
+      sudo mv brain "$brain_bin"
+      sudo chown root:root "$brain_bin"
+      sudo chmod +x "$brain_bin"
+      echo -e "${GREEN}brain has been updated.${NC}"
     else
       echo "Installation aborted."
       exit 0
     fi
   fi
 else
-  curl -o brain https://raw.githubusercontent.com/neobrains/brain/main/brain.sh -L
+  # Download and install brain
+  curl -o brain "$brain_url" -L
   chmod +x brain
   check_sudo
-  if [ ! -d ~/.brain ]; then
-    mkdir ~/.brain
-  fi
-  printf "$latest_version" > ~/.brain/version
-  sudo mv brain /usr/local/bin/
-  echo "brain installed successfully."
+  mkdir -p "$brain_dir"
+  printf "$latest_version" >"$brain_dir/version"
+  sudo mv brain "$brain_bin"
+  sudo chown root:root "$brain_bin"
+  sudo chmod +x "$brain_bin"
+  echo -e "${GREEN}brain installed successfully.${NC}"
 fi
 
 exit 0
