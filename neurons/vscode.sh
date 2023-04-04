@@ -18,26 +18,26 @@ LATEST_VERSION=$( echo $( echo $LATEST_VERSION_URL | awk -F '/' '{print $6}') | 
 CURRENT_VERSION=$( cat /opt/VSCode-linux-$ARCH/brain_version 2>/dev/null )  || CURRENT_VERSION="0"
 
 unpack() {
-   curl -o vscode.tar.gz -L "https://code.visualstudio.com/sha/download?build=stable&os=linux-$ARCH"
-   echo "Stopping VSCode, if it's running..."
-   if pgrep code > /dev/null; then
-     pkill -9 code
-   fi
-   if [ -d "/opt/VSCode" ]; then
-     rm -rf /opt/VSCode-linux-$ARCH
-   fi
-   tar -xzf vscode.tar.gz -C /opt/
-   printf "$LATEST_VERSION" > /opt/VSCode-linux-$ARCH/brain_version
-   ln -sf /opt/VSCode-linux-$ARCH/bin/code /usr/bin/code
-   if [ ! -f "/usr/share/applications/code.desktop" ]; then
-     echo "Creating desktop entry for VSCode..."
-     printf '[Desktop Entry]\nName=VSCode\nComment=Visual Studio Code\nExec=/usr/bin/code\nIcon=/opt/VSCode/VSCode-linux-$ARCH/resources/app/resources/linux/code.png\nTerminal=false\nType=Application\nCategories=Development;\n' > /usr/share/applications/code.desktop
-   fi
-   echo "Cleaning up..."
-   rm -f vscode.tar.gz
-   echo "Starting VSCode ($LATEST_VERSION)"
-   /usr/bin/code --no-sandbox & disown
-   echo "Done."
+  curl -o vscode.tar.gz -L "https://code.visualstudio.com/sha/download?build=stable&os=linux-$ARCH"
+  echo "Stopping VSCode, if it's running..."
+  if pgrep code > /dev/null; then
+    pkill -9 code
+  fi
+  if [ -d "/opt/VSCode" ]; then
+    rm -rf /opt/VSCode-linux-$ARCH
+  fi
+  tar -xzf vscode.tar.gz -C /opt/
+  printf "$LATEST_VERSION" > /opt/VSCode-linux-$ARCH/brain_version
+  ln -sf /opt/VSCode-linux-$ARCH/bin/code /usr/loacl/bin/code
+  if [ ! -f "/usr/share/applications/code.desktop" ]; then
+    echo "Creating desktop entry for VSCode..."
+    printf '[Desktop Entry]\nName=VSCode\nComment=Visual Studio Code\nExec=/usr/local/bin/code\nIcon=/opt/VSCode/VSCode-linux-$ARCH/resources/app/resources/linux/code.png\nTerminal=false\nType=Application\nCategories=Development;\n' > /usr/share/applications/code.desktop
+  fi
+  echo "Cleaning up..."
+  rm -f vscode.tar.gz
+  echo "Starting VSCode ($LATEST_VERSION)"
+  /usr/local/bin/code --no-sandbox & disown
+  echo "Done."
 }
 
 if [ "$1" == "-i" ]; then
@@ -63,8 +63,8 @@ elif [ "$1" == "-r" ]; then
   if [ -f "/usr/share/applications/code.desktop" ]; then
     rm -f /usr/share/applications/code.desktop
   fi
-  if [ -f "/usr/bin/code" ]; then
-    rm -f /usr/bin/code
+  if [ -f "/usr/local/bin/code" ]; then
+    rm -f /usr/local/bin/code
   fi
   echo "Visual Studio Code has been removed from your system."
 else

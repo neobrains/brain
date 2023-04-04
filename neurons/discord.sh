@@ -17,15 +17,15 @@ unpack() {
   fi
   tar -xzf discord.tar.gz -C /opt/
   printf "$LATEST_VERSION" > /opt/Discord/brain_version
-  ln -sf /opt/Discord/Discord /usr/bin/Discord
+  ln -sf /opt/Discord/Discord /usr/local/bin/Discord
   if [ ! -f "/usr/share/applications/discord.desktop" ]; then
     echo "Creating desktop entry for Discord..."
-    printf '[Desktop Entry]\nName=Discord\nComment=All-in-one voice and text chat for gamers.\nExec=/usr/bin/Discord\nIcon=/opt/Discord/discord.png\nTerminal=false\nType=Application\nCategories=Network;InstantMessaging;\n' > /usr/share/applications/discord.desktop
+    printf '[Desktop Entry]\nName=Discord\nComment=All-in-one voice and text chat for gamers.\nExec=/usr/local/bin/Discord\nIcon=/opt/Discord/discord.png\nTerminal=false\nType=Application\nCategories=Network;InstantMessaging;\n' > /usr/share/applications/discord.desktop
   fi
   echo "Cleaning up..."
   rm -f discord.tar.gz
   echo "Starting Discord ($LATEST_VERSION)"
-  /usr/bin/Discord --no-sandbox & disown
+  /usr/local/bin/Discord --no-sandbox & disown
   echo "Done."
 }
 
@@ -53,8 +53,8 @@ elif [ "$1" == "-r" ]; then
   if [ -f "/usr/share/applications/discord.desktop" ]; then
     rm -f /usr/share/applications/discord.desktop
   fi
-  if [ -f "/usr/bin/Discord" ]; then
-    rm -f /usr/bin/Discord
+  if [ -f "/usr/local/bin/Discord" ]; then
+    rm -f /usr/local/bin/Discord
   fi
   echo "Discord has been removed from your system."
 else

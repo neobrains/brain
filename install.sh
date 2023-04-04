@@ -49,7 +49,7 @@ else
   fi
   printf "$latest_version" > ~/.brain/version
   sudo mv brain /usr/local/bin/
-  echo "Brain installed successfully."
+  echo "brain installed successfully."
 fi
 
 exit 0
