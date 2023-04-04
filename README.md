@@ -4,7 +4,7 @@ Yet another unix package manager written in bash.
 
 ## Why?
 
-Yes , we know you got flatpak and other package managers, but we wanted to create our own package manager , though it will not support many packages , but it will support the packages that have issues with flatpak. For example , with flatpak installed discord / vscode there are some known issues , but with brain installed discord / vscode there are no issues as we install then using the tar.gz / deb / rpm / etc. files.
+Yes , we know you got flatpak, but we wanted to create our own package manager , though it will not support many packages , but it will support the packages that have issues with flatpak. For example , with flatpak installed discord / vscode there are some known issues , but with brain installed discord / vscode there are no issues as we install then using the tar.gz / deb / rpm / etc. files.
 
 ## Installation
 
