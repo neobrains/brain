@@ -13,19 +13,13 @@ unpack() {
     pkill -9 Discord || true
   fi
   if [ -d "/opt/Discord" ]; then
-    if ! sudo -v &>/dev/null; then
-      printf "\e[31mError: You need to have sudo privileges to use this command\e[0m\n"
-      exit 1
-    fi
     rm -rf /opt/Discord
   fi
   tar -xzf discord.tar.gz -C /opt/
   printf "$LATEST_VERSION" > /opt/Discord/brain_version
   ln -sf /opt/Discord/Discord /usr/local/bin/Discord
-  if [ ! -f "/usr/share/applications/discord.desktop" ]; then
-    echo "Creating desktop entry for Discord..."
-    printf '[Desktop Entry]\nName=Discord\nComment=All-in-one voice and text chat for gamers.\nExec=/usr/local/bin/Discord\nIcon=/opt/Discord/discord.png\nTerminal=false\nType=Application\nCategories=Network;InstantMessaging;\n' > /usr/share/applications/discord.desktop
-  fi
+  echo "Creating desktop entry for Discord..."
+  printf '[Desktop Entry]\nName=Discord\nComment=All-in-one voice and text chat for gamers.\nExec=/usr/local/bin/Discord\nIcon=/opt/Discord/discord.png\nTerminal=false\nType=Application\nCategories=Network;InstantMessaging;\n' > /usr/share/applications/discord.desktop
   echo "Cleaning up..."
   rm -f discord.tar.gz
   echo "Starting Discord ($LATEST_VERSION)"

@@ -78,7 +78,7 @@ if [[ $1 =~ (install|update|remove) ]]; then
         exit 1
     fi
 
-    sudo curl -sL "$neurons_git/$2.sh" | bash -s -- "$action"
+    curl -sL "$neurons_git/$2.sh" | sudo bash -s -- "$action"
     exit_status=$?
 
     if [ $exit_status -ne 0 ]; then

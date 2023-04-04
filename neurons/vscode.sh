@@ -24,19 +24,13 @@ unpack() {
     pkill -9 code || true
   fi
   if [ -d "/opt/VSCode-linux-$ARCH" ]; then
-    if ! sudo -v &>/dev/null; then
-      printf "\e[31mError: You need to have sudo privileges to use this command\e[0m\n"
-      exit 1
-    fi
     rm -rf /opt/VSCode-linux-$ARCH
   fi
   tar -xzf vscode.tar.gz -C /opt/
   printf "$LATEST_VERSION" > /opt/VSCode-linux-$ARCH/brain_version
   ln -sf /opt/VSCode-linux-$ARCH/bin/code /usr/local/bin/code
-  if [ ! -f "/usr/share/applications/code.desktop" ]; then
-    echo "Creating desktop entry for VSCode..."
-    printf "[Desktop Entry]\nName=VSCode\nComment=Visual Studio Code\nExec=/usr/local/bin/code\nIcon=/opt/VSCode/VSCode-linux-$ARCH/resources/app/resources/linux/code.png\nTerminal=false\nType=Application\nCategories=Development;\n" > /usr/share/applications/code.desktop
-  fi
+  echo "Creating desktop entry for VSCode..."
+  printf "[Desktop Entry]\nName=VSCode\nComment=Visual Studio Code\nExec=/usr/local/bin/code\nIcon=/opt/VSCode/VSCode-linux-$ARCH/resources/app/resources/linux/code.png\nTerminal=false\nType=Application\nCategories=Development;\n" > /usr/share/applications/code.desktop
   echo "Cleaning up..."
   rm -f vscode.tar.gz
   echo "Starting VSCode ($LATEST_VERSION)"
