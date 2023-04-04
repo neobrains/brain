@@ -28,7 +28,7 @@ unpack() {
   fi
   tar -xzf vscode.tar.gz -C /opt/
   printf "$LATEST_VERSION" > /opt/VSCode-linux-$ARCH/brain_version
-  ln -sf /opt/VSCode-linux-$ARCH/bin/code /usr/loacl/bin/code
+  ln -sf /opt/VSCode-linux-$ARCH/bin/code /usr/local/bin/code
   if [ ! -f "/usr/share/applications/code.desktop" ]; then
     echo "Creating desktop entry for VSCode..."
     printf '[Desktop Entry]\nName=VSCode\nComment=Visual Studio Code\nExec=/usr/local/bin/code\nIcon=/opt/VSCode/VSCode-linux-$ARCH/resources/app/resources/linux/code.png\nTerminal=false\nType=Application\nCategories=Development;\n' > /usr/share/applications/code.desktop
