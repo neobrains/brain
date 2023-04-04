@@ -26,7 +26,7 @@ if [ -x "$(command -v brain)" ]; then
       if [ ! -d ~/.brain ]; then
         mkdir ~/.brain
       fi
-      printf "$latest_version" > ~/.brain/.version
+      printf "$latest_version" > ~/.brain/version
       sudo mv brain /usr/local/bin/
       echo "brain has been updated."
     else
@@ -39,6 +39,10 @@ else
   curl -o brain https://raw.githubusercontent.com/neobrains/brain/$latest_version/brain.sh
   chmod +x brain
   check_sudo
+  if [ ! -d ~/.brain ]; then
+    mkdir ~/.brain
+  fi
+  printf "$latest_version" > ~/.brain/version
   sudo mv brain /usr/local/bin/
   echo "brain installed."
 fi

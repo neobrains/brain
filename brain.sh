@@ -20,6 +20,6 @@ if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
 fi
 
 if [ "$1" == "--version" ] || [ "$1" == "-v" ]; then
-    echo $(cat ~/.brain/.version)
+    echo $(cat ~/.brain/version)
     exit 0
 fi
