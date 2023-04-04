@@ -2,6 +2,11 @@
 
 set -e
 
+if ! sudo -v &>/dev/null; then
+  printf "\e[31mError: You need to have sudo privileges to use this command\e[0m\n"
+  exit 1
+fi
+
 if [ "$( uname -m )" == "x86_64" ] ; then
   ARCH="x64" 
 elif [ "$( uname -m )" == "aarch64" ] ; then
@@ -21,7 +26,7 @@ unpack() {
   curl -o vscode.tar.gz -L "https://code.visualstudio.com/sha/download?build=stable&os=linux-$ARCH"
   echo "Stopping VSCode, if it's running..."
   if pgrep code > /dev/null; then
-    pkill -9 code
+    sudo pkill -9 code
   fi
   if [ -d "/opt/VSCode" ]; then
     rm -rf /opt/VSCode-linux-$ARCH
