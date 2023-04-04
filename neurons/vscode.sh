@@ -14,7 +14,7 @@ else
 fi
 
 LATEST_VERSION_URL=$( curl -w "%{url_effective}\n" -I -L -s -S "https://code.visualstudio.com/sha/download?build=stable&os=linux-$ARCH" -o /dev/null )
-LATEST_VERSION=$( "$LATEST_VERSION_URL" | awk -F '/' '{print $6}' | sed -r 's/.*-([0-9]+)\.tar\.gz/\1/' )
+LATEST_VERSION=$( echo "$LATEST_VERSION_URL" | awk -F '/' '{print $6}' | sed -r 's/.*-([0-9]+)\.tar\.gz/\1/' )
 CURRENT_VERSION=$( cat /opt/VSCode-linux-$ARCH/brain_version 2>/dev/null )  || CURRENT_VERSION="0"
 
 unpack() {
