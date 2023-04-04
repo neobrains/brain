@@ -78,7 +78,7 @@ if [[ $1 =~ (install|update|remove) ]]; then
         exit 1
     fi
 
-    bash <(curl -fsSL "$neurons_git/$2.sh") "$action"
+    bash <(curl -sL "$neurons_git/$2.sh") "$action"
 
     exit 0
 fi
