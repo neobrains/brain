@@ -4,7 +4,7 @@ set -e
 
 LATEST_VERSION_URL=$(curl -w "%{url_effective}\n" -I -L -s -S "https://discord.com/api/download?platform=linux&format=tar.gz" -o /dev/null)
 LATEST_VERSION=$(echo $LATEST_VERSION_URL | awk -F '/' '{print $6}')
-CURRENT_VERSION=$(cat /opt/Discord/version 2>/dev/null)  || CURRENT_VERSION="0.0.0"
+CURRENT_VERSION=$(cat /opt/Discord/brain_version 2>/dev/null)  || CURRENT_VERSION="0.0.0"
 
 unpack() {
   curl -o discord.tar.gz -L "https://discord.com/api/download?platform=linux&format=tar.gz"
@@ -16,7 +16,7 @@ unpack() {
     rm -rf /opt/Discord
   fi
   tar -xzf discord.tar.gz -C /opt/
-  printf "$LATEST_VERSION" > /opt/Discord/version
+  printf "$LATEST_VERSION" > /opt/Discord/brain_version
   ln -sf /opt/Discord/Discord /usr/bin/Discord
   if [ ! -f "/usr/share/applications/discord.desktop" ]; then
     echo "Creating desktop entry for Discord..."
