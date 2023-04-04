@@ -3,7 +3,7 @@
 set -e
 
 LATEST_VERSION_URL=$(curl -w "%{url_effective}\n" -I -L -s -S "https://discord.com/api/download?platform=linux&format=tar.gz" -o /dev/null)
-LATEST_VERSION=$(echo $LATEST_VERSION_URL | awk -F '/' '{print $6}')
+LATEST_VERSION=$(echo "$LATEST_VERSION_URL" | awk -F '/' '{print $6}')
 CURRENT_VERSION=$(cat /opt/Discord/brain_version 2>/dev/null)  || CURRENT_VERSION="0.0.0"
 
 unpack() {

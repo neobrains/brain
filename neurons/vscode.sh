@@ -2,11 +2,11 @@
 
 set -e
 
-if [ $( uname -m ) == "x86_64" ] ; then 
+if [ "$( uname -m )" == "x86_64" ] ; then
   ARCH="x64" 
-elif [ $( uname -m ) == "aarch64" ] ; then 
+elif [ "$( uname -m )" == "aarch64" ] ; then
   ARCH="arm64" 
-elif [ $( uname -m ) == "armv7l" ] ; then 
+elif [ "$( uname -m )" == "armv7l" ] ; then
   ARCH="armhf" 
 else 
   echo "Unsupported architecture: $( uname -m )" 
@@ -14,7 +14,7 @@ else
 fi
 
 LATEST_VERSION_URL=$( curl -w "%{url_effective}\n" -I -L -s -S "https://code.visualstudio.com/sha/download?build=stable&os=linux-$ARCH" -o /dev/null )
-LATEST_VERSION=$( echo $( echo $LATEST_VERSION_URL | awk -F '/' '{print $6}') | sed -r 's/.*-([0-9]+)\.tar\.gz/\1/' )
+LATEST_VERSION=$( echo "$( "$LATEST_VERSION_URL" | awk -F '/' '{print $6}')" | sed -r 's/.*-([0-9]+)\.tar\.gz/\1/' )
 CURRENT_VERSION=$( cat /opt/VSCode-linux-$ARCH/brain_version 2>/dev/null )  || CURRENT_VERSION="0"
 
 unpack() {
@@ -31,7 +31,7 @@ unpack() {
   ln -sf /opt/VSCode-linux-$ARCH/bin/code /usr/local/bin/code
   if [ ! -f "/usr/share/applications/code.desktop" ]; then
     echo "Creating desktop entry for VSCode..."
-    printf '[Desktop Entry]\nName=VSCode\nComment=Visual Studio Code\nExec=/usr/local/bin/code\nIcon=/opt/VSCode/VSCode-linux-$ARCH/resources/app/resources/linux/code.png\nTerminal=false\nType=Application\nCategories=Development;\n' > /usr/share/applications/code.desktop
+    printf "[Desktop Entry]\nName=VSCode\nComment=Visual Studio Code\nExec=/usr/local/bin/code\nIcon=/opt/VSCode/VSCode-linux-$ARCH/resources/app/resources/linux/code.png\nTerminal=false\nType=Application\nCategories=Development;\n" > /usr/share/applications/code.desktop
   fi
   echo "Cleaning up..."
   rm -f vscode.tar.gz
