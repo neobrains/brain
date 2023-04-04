@@ -15,7 +15,7 @@ unpack() {
   curl -o discord.tar.gz -L "https://discord.com/api/download?platform=linux&format=tar.gz"
   echo "Stopping Discord, if it's running..."
   if pgrep Discord > /dev/null; then
-    sudo pkill -9 Discord
+    pkill -9 Discord || true
   fi
   if [ -d "/opt/Discord" ]; then
     rm -rf /opt/Discord
