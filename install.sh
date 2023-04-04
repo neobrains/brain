@@ -18,9 +18,9 @@ if [ -x "$(command -v brain)" ]; then
     echo "brain is already installed and up-to-date."
     exit 0
   else
-    read -p "brain is already installed, but there is a new version available. Do you want to update it? (y/n) " answer
+    read -p "Brain is already installed, but there is a new version available. Do you want to update it? (y/n) " answer
     if [[ $answer =~ ^[Yy]$ ]]; then
-      curl -o brain https://raw.githubusercontent.com/neobrains/brain/main/brain.sh
+      curl -o brain https://raw.githubusercontent.com/neobrains/brain/main/brain.sh -L
       chmod +x brain
       check_sudo
       if [ ! -d ~/.brain ]; then
@@ -36,7 +36,7 @@ if [ -x "$(command -v brain)" ]; then
   fi
 else
   latest_version=$(curl -s https://api.github.com/repos/example/brain/releases/latest | grep tag_name | cut -d '"' -f 4)
-  curl -o brain https://raw.githubusercontent.com/neobrains/brain/main/brain.sh
+  curl -o brain https://raw.githubusercontent.com/neobrains/brain/main/brain.sh -L
   chmod +x brain
   check_sudo
   if [ ! -d ~/.brain ]; then
@@ -44,7 +44,7 @@ else
   fi
   printf "$latest_version" > ~/.brain/version
   sudo mv brain /usr/local/bin/
-  echo "brain installed."
+  echo "Brain installed successfully."
 fi
 
 exit 0
