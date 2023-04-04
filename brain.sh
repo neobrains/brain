@@ -14,6 +14,7 @@ usage() {
     echo "  info            Show information about a package"
 }
 
+
 if [ $# -eq 0 ]; then
     usage
     exit 0
@@ -32,7 +33,7 @@ fi
 if [ "$1" == "--update" ] || [ "$1" == "-u" ]; then
     echo "Updating brain..."
     if ! sudo -v >/dev/null 2>&1; then
-    echo "Error: You need to have sudo privileges to update brain"
+    echo -e "\e[31mError: You need to have sudo privileges to update brain\e[0m"
     exit 1
   fi
     curl -o brain https://raw.githubusercontent.com/neobrains/brain/main/brain.sh -L
@@ -43,7 +44,7 @@ if [ "$1" == "--update" ] || [ "$1" == "-u" ]; then
     fi
     printf "$latest_version" > ~/.brain/version
     sudo mv brain /usr/local/bin/
-    echo "brain has been updated."
+    echo -e "\e[32mbrain has been updated.\e[0m"
     exit 0
 fi
 
@@ -56,6 +57,5 @@ if [ "$1" == "install" ]; then
     exit 0
 fi
 
-# if none of the above commands were used, show error message and call usage function
-echo "Error: Unknown command '$1'"
+echo -e "\e[31mError: Unknown command '$1'\e[0m"
 usage
