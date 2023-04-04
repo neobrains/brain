@@ -22,8 +22,6 @@ unpack() {
   printf '[Desktop Entry]\nName=Discord\nComment=All-in-one voice and text chat for gamers.\nExec=/usr/local/bin/Discord\nIcon=/opt/Discord/discord.png\nTerminal=false\nType=Application\nCategories=Network;InstantMessaging;\n' > /usr/share/applications/discord.desktop
   echo "Cleaning up..."
   rm -f discord.tar.gz
-  echo "Starting Discord ($LATEST_VERSION)"
-  /usr/local/bin/Discord --no-sandbox & disown
   echo "Done."
 }
 

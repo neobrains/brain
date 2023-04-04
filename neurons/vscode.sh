@@ -33,8 +33,6 @@ unpack() {
   echo -en "[Desktop Entry]\nName=VSCode\nComment=Visual Studio Code\nExec=/usr/local/bin/code\nIcon=/opt/VSCode-linux-$ARCH/resources/app/resources/linux/code.png\nTerminal=false\nType=Application\nCategories=Development;\n" > /usr/share/applications/code.desktop
   echo "Cleaning up..."
   rm -f vscode.tar.gz
-  echo "Starting VSCode ($LATEST_VERSION)"
-  /usr/local/bin/code --no-sandbox --user-data-dir ~/.config/Code & disown
   echo "Done."
 }
 
