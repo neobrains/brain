@@ -83,9 +83,9 @@ if [[ $1 =~ (install|update|remove) ]]; then
         echo -e "\e[31mError: Failed to download package '$2'. Please check the package name and try again.\e[0m"
         exit 1
     fi
-    
-    sudo bash <("$bash_script") "$action"
 
+    bash <("$bash_script") "$action"
+    
     exit 0
 fi
 
