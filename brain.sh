@@ -66,25 +66,24 @@ fi
 
 if [[ $1 =~ (install|update|remove) ]]; then
     if [ "$1" == "install" ]; then
-        action="-i"
+        action="--install"
     elif [ "$1" == "update" ]; then
-        action="-u"
+        action="--update"
     else
-        action="-r"
+        action="--remove"
     fi
     if [ -z "$2" ]; then
         echo -e "\e[31mError: You must provide a package name to $1\e[0m"
         usage
         exit 1
     fi
-    curl -sL "$neurons_git/$2.sh" | bash -s "$action"
-    # response=$()
-    # exit_status=$?
+    response=$(curl -sL -w "%{http_code}" "$neurons_git/$2.sh" | bash -s "$action")
+    exit_status=$?
 
-    # if [ $exit_status -ne 0 ] || [ "$response" -ne 200 ]; then
-    #     echo -e "\e[31mError: Failed to download package '$2'. Please check the package name and try again.\e[0m"
-    #     exit 1
-    # fi
+    if [ $exit_status -ne 0 ] || [ "$response" -ne 200 ]; then
+        echo -e "\e[31mError: Failed to download package '$2'. Please check the package name and try again.\e[0m"
+        exit 1
+    fi
     exit 0
 fi
 
