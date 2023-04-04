@@ -78,12 +78,12 @@ if [[ $1 =~ (install|update|remove) ]]; then
         exit 1
     fi
 
-    curl -sL "$neurons_git/$2.sh" | bash -s -- "$action"
+    sudo curl -sL "$neurons_git/$2.sh" | bash -s -- "$action"
     exit_status=$?
 
     if [ $exit_status -ne 0 ]; then
         status=$(curl -sL -w "%{http_code}" "$neurons_git/$2.sh" -o /dev/null)
-        if [ "$status" -eq 404 ]; then
+        if [ "$status" -eq "404" ]; then
             echo -e "\e[31mError: Package '$2' not found\e[0m"
         fi
         exit 1

@@ -2,11 +2,6 @@
 
 set -e
 
-if ! sudo -v &>/dev/null; then
-  printf "\e[31mError: You need to have sudo privileges to use this command\e[0m\n"
-  exit 1
-fi
-
 if [ "$( uname -m )" == "x86_64" ] ; then
   ARCH="x64" 
 elif [ "$( uname -m )" == "aarch64" ] ; then
@@ -29,6 +24,10 @@ unpack() {
     pkill -9 code || true
   fi
   if [ -d "/opt/VSCode" ]; then
+    if [ "$(stat -c '%U' /opt/VSCode-linux-$ARCH)" != "root" ]; then
+      echo "VSCode is not owned by root. Please run 'sudo chown -R root:root /opt/VSCode-linux-$ARCH' and try again."
+      exit 1
+    fi
     rm -rf /opt/VSCode-linux-$ARCH
   fi
   tar -xzf vscode.tar.gz -C /opt/

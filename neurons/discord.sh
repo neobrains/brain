@@ -13,6 +13,10 @@ unpack() {
     pkill -9 Discord || true
   fi
   if [ -d "/opt/Discord" ]; then
+    if [ "$(stat -c '%U' /opt/Discord)" != "root" ]; then
+      echo "Discord is not owned by root. Please run 'sudo chown -R root:root /opt/Discord' and try again."
+      exit 1
+    fi
     rm -rf /opt/Discord
   fi
   tar -xzf discord.tar.gz -C /opt/
