@@ -13,8 +13,8 @@ unpack() {
     pkill -9 Discord || true
   fi
   if [ -d "/opt/Discord" ]; then
-    if [ "$(stat -c '%U' /opt/Discord)" != "root" ]; then
-      echo "Discord is not owned by root. Please run 'sudo chown -R root:root /opt/Discord' and try again."
+    if ! sudo -v &>/dev/null; then
+      printf "\e[31mError: You need to have sudo privileges to use this command\e[0m\n"
       exit 1
     fi
     rm -rf /opt/Discord

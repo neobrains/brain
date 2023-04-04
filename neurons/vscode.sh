@@ -23,9 +23,9 @@ unpack() {
   if pgrep code > /dev/null; then
     pkill -9 code || true
   fi
-  if [ -d "/opt/VSCode" ]; then
-    if [ "$(stat -c '%U' /opt/VSCode-linux-$ARCH)" != "root" ]; then
-      echo "VSCode is not owned by root. Please run 'sudo chown -R root:root /opt/VSCode-linux-$ARCH' and try again."
+  if [ -d "/opt/VSCode-linux-$ARCH" ]; then
+    if ! sudo -v &>/dev/null; then
+      printf "\e[31mError: You need to have sudo privileges to use this command\e[0m\n"
       exit 1
     fi
     rm -rf /opt/VSCode-linux-$ARCH
