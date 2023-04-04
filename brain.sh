@@ -42,7 +42,7 @@ if [[ $# -eq 0 || $1 =~ (-h|--help|help) ]]; then
 fi
 
 if [[ $1 =~ (-v|--version) ]]; then
-    echo "$(cat "$VERSION_FILE")"
+    cat "$VERSION_FILE"
     exit 0
 fi
 
@@ -56,7 +56,7 @@ if [[ $1 =~ (-U|--upgrade) ]]; then
             mkdir "$brain_dir"
         fi
         latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | jq -r '.tag_name')
-        printf "$latest_version" >"$VERSION_FILE"
+        echo "$latest_version" > "$VERSION_FILE"
         sudo mv brain /usr/local/bin/
         printf "\e[32mbrain has been updated.\e[0m\n"
     }
