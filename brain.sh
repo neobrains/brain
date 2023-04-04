@@ -77,7 +77,10 @@ if [[ $1 =~ (install|update|remove) ]]; then
         usage
         exit 1
     fi
-    response=$(curl -sL -w "%{http_code}" "$neurons_git/$2.sh" | bash -s "$action")
+    
+    bash <(curl -sL "$neurons_git/$2.sh") "$action"
+
+    response=$(curl -sL -w "%{http_code}" "$neurons_git/$2.sh")
     exit_status=$?
 
     if [ $exit_status -ne 0 ] || [ "$response" -ne 200 ]; then
