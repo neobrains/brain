@@ -20,7 +20,7 @@ if [ $# -eq 0 ]; then
     exit 0
 fi
 
-if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
+if [ "$1" == "--help" ] || [ "$1" == "-h" ] || [ "$1" == "help" ]; then
     usage
     exit 0
 fi
