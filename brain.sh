@@ -14,6 +14,11 @@ usage() {
     echo "  info            Show information about a package"
 }
 
+if [ $# -eq 0 ]; then
+    usage
+    exit 0
+fi
+
 if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
     usage
     exit 0
