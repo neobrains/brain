@@ -4,7 +4,7 @@ set -e
 
 readonly brain_dir="$HOME/.brain"
 readonly VERSION_FILE=~/.brain/version
-readonly brain_bin="/usr/local/bin/brain"
+readonly _brain_bin="/usr/local/bin/brain"
 readonly neurons_git="https://raw.githubusercontent.com/neobrains/brain/main/neurons"
 readonly brain_url="https://raw.githubusercontent.com/neobrains/brain/main/brain.sh"
 
@@ -14,9 +14,10 @@ usage() {
     echo "  -h, --help      Show this help message and exit"
     echo "  -v, --version   Show version and exit"
     echo "  -u, --update    Update brain to the latest version"
+    echo "  -r, --remove    Remove brain from your system"
     echo "Commands:"
     echo "  install         Install a package"
-    echo "  remove          Remove a package"
+    echo "  uninstall       Uninstall a package"
     echo "  update          Update a package"
     echo "  upgrade         Upgrade the cli"
     echo "  search          Search for a package"
@@ -64,7 +65,12 @@ if [[ $1 =~ (-U|--upgrade) ]]; then
     exit 0
 fi
 
-if [[ $1 =~ (install|update|remove) ]]; then
+if [[ $1 =~ (-r|--remove) ]]; then
+    curl -sL "https://raw.githubusercontent.com/neobrains/brain/main/uninstall.sh" | sudo bash
+    exit 0
+fi
+
+if [[ $1 =~ (install|update|uninstall) ]]; then
     if [ "$1" == "install" ]; then
         action="-install"
     elif [ "$1" == "update" ]; then
@@ -78,21 +84,26 @@ if [[ $1 =~ (install|update|remove) ]]; then
         exit 1
     fi
 
-    curl -sL "$neurons_git/$2.sh" | sudo bash -s -- "$action"
+    script=$(curl -sL "$neurons_git/$2.sh")
+
+    if [ "$script" == "404: Not Found" ]; then
+        echo -e "\e[31mError: Package '$2' not found\e[0m"
+        exit 1
+    fi
+
+    echo "$script" | sudo bash -s -- "$action"
+
     exit_status=$?
 
     if [ $exit_status -ne 0 ]; then
-        status=$(curl -sL -w "%{http_code}" "$neurons_git/$2.sh" -o /dev/null)
-        if [ "$status" -eq "404" ]; then
-            echo -e "\e[31mError: Package '$2' not found\e[0m"
-        fi
+        echo -e "\e[31mError: $2 failed to $1\e[0m"
         exit 1
     fi
     exit 0
 fi
 
 if ! [[ ${COMMANDS[*]} =~ $1 ]]; then
-    printf "\e[31mError: Unknown command '$1'\e[0m\n"
+    echo -en "\e[31mError: Unknown command '$1'\e[0m\n"
     usage
     exit 1
 fi
