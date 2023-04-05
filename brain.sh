@@ -11,13 +11,13 @@ readonly brain_url="https://raw.githubusercontent.com/neobrains/brain/main/brain
 valid_commands=("install" "uninstall" "update" "upgrade" "search" "list" "info")
 
 usage() {
-    # print version
     echo "brain version $(cat "$VERSION_FILE")"
     echo "Usage: $0 [options] [command]"
     echo "Options:"
     echo "  -h, --help      Show this help message and exit"
     echo "  -v, --version   Show version and exit"
-    echo "  -U, --upgrade   Update brain to the latest version"
+    echo "  -u, --upgrade   Update brain to the latest version"
+    echo "  -f, --force     Force update brain to the latest version"
     echo "  -r, --remove    Remove brain from your system"
     echo "Commands:"
     echo "  install         Install a package"
@@ -27,6 +27,8 @@ usage() {
     echo "  search          Search for a package"
     echo "  list            List installed packages"
     echo "  info            Show information about a package"
+    echo ""
+    echo "For more information, visit https://github.com/neobrains/brain"
 }
 
 check_sudo() {
@@ -51,7 +53,7 @@ if [[ $1 =~ (-v|--version) ]]; then
     exit 0
 fi
 
-if [[ $1 =~ (-U|--upgrade) ]]; then
+if [[ $1 =~ (-u|--upgrade) ]]; then
     update_brain() {
         echo "Updating brain..."
         check_sudo
