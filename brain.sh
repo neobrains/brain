@@ -11,8 +11,8 @@ readonly brain_url="https://raw.githubusercontent.com/neobrains/brain/main/brain
 valid_commands=("install" "uninstall" "update" "upgrade" "search" "list" "info")
 
 usage() {
+    echo "Usage: $(basename "$0") [options] [command]"
     echo "brain version $(cat "$VERSION_FILE")"
-    echo "Usage: $0 [options] [command]"
     echo "Options:"
     echo "  -h, --help      Show this help message and exit"
     echo "  -v, --version   Show version and exit"
