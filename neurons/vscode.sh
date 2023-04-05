@@ -36,19 +36,19 @@ unpack() {
   echo "Done."
 }
 
-if [ "$1" == "-install" ]; then
+if [[ $1 =~ (-install) ]]; then
   echo "Downloading Visual Studio Code $LATEST_VERSION..."
   unpack
-elif [ "$1" == "-update" ]; then
+elif [[ $1 =~ (-update) ]]; then
   echo "Checking for updates..."
-  if [ "$LATEST_VERSION" == "$CURRENT_VERSION" ]; then
+  if [[ "$LATEST_VERSION" == "$CURRENT_VERSION" ]]; then
     echo "Visual Studio Code is already up to date ($CURRENT_VERSION)."
     exit 0
   else
     echo "Updating Visual Studio Code $CURRENT_VERSION -> $LATEST_VERSION"
     unpack
   fi
-elif [ "$1" == "-uninstall" ]; then
+elif [[ $1 =~ (-uninstall) ]]; then
   if pgrep code >/dev/null; then
     pkill -9 code
   fi
