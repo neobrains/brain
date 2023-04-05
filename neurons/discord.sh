@@ -16,7 +16,7 @@ unpack() {
     rm -rf /opt/Discord
   fi
   tar -xzf discord.tar.gz -C /opt/
-  echo"$LATEST_VERSION" > /opt/Discord/brain_version
+  echo "$LATEST_VERSION" > /opt/Discord/brain_version
   ln -sf /opt/Discord/Discord /usr/local/bin/Discord
   echo "Creating desktop entry for Discord..."
   printf '[Desktop Entry]\nName=Discord\nComment=All-in-one voice and text chat for gamers.\nExec=/usr/local/bin/Discord\nIcon=/opt/Discord/discord.png\nTerminal=false\nType=Application\nCategories=Network;InstantMessaging;\n' > /usr/share/applications/discord.desktop
