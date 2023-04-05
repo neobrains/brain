@@ -2,35 +2,35 @@
 
 set -e
 
-if [ "$( uname -m )" == "x86_64" ] ; then
-  ARCH="x64" 
-elif [ "$( uname -m )" == "aarch64" ] ; then
-  ARCH="arm64" 
-elif [ "$( uname -m )" == "armv7l" ] ; then
-  ARCH="armhf" 
-else 
-  echo "Unsupported architecture: $( uname -m )" 
-  exit 1 
+if [ "$(uname -m)" == "x86_64" ]; then
+  ARCH="x64"
+elif [ "$(uname -m)" == "aarch64" ]; then
+  ARCH="arm64"
+elif [ "$(uname -m)" == "armv7l" ]; then
+  ARCH="armhf"
+else
+  echo "Unsupported architecture: $(uname -m)"
+  exit 1
 fi
 
-LATEST_VERSION_URL=$( curl -w "%{url_effective}\n" -I -L -s -S "https://code.visualstudio.com/sha/download?build=stable&os=linux-$ARCH" -o /dev/null )
-LATEST_VERSION=$( echo "$LATEST_VERSION_URL" | awk -F '/' '{print $6}' | sed -r 's/.*-([0-9]+)\.tar\.gz/\1/' )
-CURRENT_VERSION=$( cat /opt/VSCode-linux-$ARCH/brain_version 2>/dev/null )  || CURRENT_VERSION="0"
+LATEST_VERSION_URL=$(curl -w "%{url_effective}\n" -I -L -s -S "https://code.visualstudio.com/sha/download?build=stable&os=linux-$ARCH" -o /dev/null)
+LATEST_VERSION=$(echo "$LATEST_VERSION_URL" | awk -F '/' '{print $6}' | sed -r 's/.*-([0-9]+)\.tar\.gz/\1/')
+CURRENT_VERSION=$(cat /opt/VSCode-linux-$ARCH/brain_version 2>/dev/null) || CURRENT_VERSION="0"
 
 unpack() {
   curl -o vscode.tar.gz -L "https://code.visualstudio.com/sha/download?build=stable&os=linux-$ARCH"
   echo "Stopping VSCode, if it's running..."
-  if pgrep code > /dev/null; then
+  if pgrep code >/dev/null; then
     pkill -9 code || true
   fi
   if [ -d "/opt/VSCode-linux-$ARCH" ]; then
     rm -rf /opt/VSCode-linux-$ARCH
   fi
   tar -xzf vscode.tar.gz -C /opt/
-  echo "$LATEST_VERSION" > /opt/VSCode-linux-$ARCH/brain_version
+  echo "$LATEST_VERSION" >/opt/VSCode-linux-$ARCH/brain_version
   ln -sf /opt/VSCode-linux-$ARCH/bin/code /usr/local/bin/code
   echo "Creating desktop entry for VSCode..."
-  echo -en "[Desktop Entry]\nName=VSCode\nComment=Visual Studio Code\nExec=/usr/local/bin/code\nIcon=/opt/VSCode-linux-$ARCH/resources/app/resources/linux/code.png\nTerminal=false\nType=Application\nCategories=Development;\n" > /usr/share/applications/code.desktop
+  echo -en "[Desktop Entry]\nName=VSCode\nComment=Visual Studio Code\nExec=/usr/local/bin/code\nIcon=/opt/VSCode-linux-$ARCH/resources/app/resources/linux/code.png\nTerminal=false\nType=Application\nCategories=Development;\n" >/usr/share/applications/code.desktop
   echo "Cleaning up..."
   rm -f vscode.tar.gz
   echo "Done."
@@ -48,8 +48,8 @@ elif [ "$1" == "-update" ]; then
     echo "Updating Visual Studio Code $CURRENT_VERSION -> $LATEST_VERSION"
     unpack
   fi
-elif [ "$1" == "-remove" ]; then
-  if pgrep code > /dev/null; then
+elif [ "$1" == "-uninstall" ]; then
+  if pgrep code >/dev/null; then
     pkill -9 code
   fi
   echo "Removing Visual Studio Code..."

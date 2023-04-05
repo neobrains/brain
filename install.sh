@@ -31,7 +31,7 @@ if [ -x "$brain_bin" ]; then
     echo "brain is already installed and up-to-date."
     exit 0
   else
-    read -p "Brain is already installed, but there is a new version available. Do you want to update it? (y/n) " answer
+    read -r -p "Brain is already installed, but there is a new version available. Do you want to update it? (y/n) " answer
     if [[ $answer =~ ^[Yy]$ ]]; then
       curl -o brain "$brain_url" -L
       chmod +x brain
@@ -39,7 +39,7 @@ if [ -x "$brain_bin" ]; then
       if [ ! -d "$brain_dir" ]; then
         mkdir "$brain_dir"
       fi
-      printf "$latest_version" >"$brain_dir/version"
+      printf '%s' "$latest_version" >"$brain_dir/version"
       sudo mv brain "$brain_bin"
       sudo chown root:root "$brain_bin"
       sudo chmod +x "$brain_bin"
@@ -50,11 +50,11 @@ if [ -x "$brain_bin" ]; then
     fi
   fi
 else
-  curl -o brain "$brain_url" -L
+  curl -o brain "$brain_url" -Ls
   chmod +x brain
   check_sudo
   mkdir -p "$brain_dir"
-  printf "$latest_version" >"$brain_dir/version"
+  printf '%s' "$latest_version" >"$brain_dir/version"
   sudo mv brain "$brain_bin"
   sudo chown root:root "$brain_bin"
   sudo chmod +x "$brain_bin"

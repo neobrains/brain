@@ -8,12 +8,16 @@ readonly _brain_bin="/usr/local/bin/brain"
 readonly neurons_git="https://raw.githubusercontent.com/neobrains/brain/main/neurons"
 readonly brain_url="https://raw.githubusercontent.com/neobrains/brain/main/brain.sh"
 
+valid_commands=("install" "uninstall" "update" "upgrade" "search" "list" "info")
+
 usage() {
+    # print version
+    echo "brain version $(cat "$VERSION_FILE")"
     echo "Usage: $0 [options] [command]"
     echo "Options:"
     echo "  -h, --help      Show this help message and exit"
     echo "  -v, --version   Show version and exit"
-    echo "  -u, --update    Update brain to the latest version"
+    echo "  -U, --upgrade   Update brain to the latest version"
     echo "  -r, --remove    Remove brain from your system"
     echo "Commands:"
     echo "  install         Install a package"
@@ -57,7 +61,7 @@ if [[ $1 =~ (-U|--upgrade) ]]; then
             mkdir "$brain_dir"
         fi
         latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | jq -r '.tag_name')
-        echo "$latest_version" > "$VERSION_FILE"
+        echo "$latest_version" >"$VERSION_FILE"
         sudo mv brain /usr/local/bin/
         printf "\e[32mbrain has been updated.\e[0m\n"
     }
@@ -66,18 +70,30 @@ if [[ $1 =~ (-U|--upgrade) ]]; then
 fi
 
 if [[ $1 =~ (-r|--remove) ]]; then
-    curl -sL "https://raw.githubusercontent.com/neobrains/brain/main/uninstall.sh" | sudo bash
-    exit 0
+    read -r -p "Are you sure you want to remove brain? (y/n) " answer
+    if [[ $answer =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        echo "Removing brain..."
+        check_sudo
+        sudo rm -f /usr/local/bin/brain
+        if [ -d ~/.brain ]; then
+            sudo rm -rf ~/.brain
+        fi
+        printf "\e[32mbrain has been removed.\e[0m\n"
+    fi
 fi
 
 if [[ $1 =~ (install|update|uninstall) ]]; then
-    if [ "$1" == "install" ]; then
+    case "$1" in
+    "install")
         action="-install"
-    elif [ "$1" == "update" ]; then
+        ;;
+    "update")
         action="-update"
-    else
-        action="-remove"
-    fi
+        ;;
+    *)
+        action="-uninstall"
+        ;;
+    esac
     if [ -z "$2" ]; then
         echo -e "\e[31mError: You must provide a package name to $1\e[0m"
         usage
@@ -102,8 +118,11 @@ if [[ $1 =~ (install|update|uninstall) ]]; then
     exit 0
 fi
 
-if ! [[ ${COMMANDS[*]} =~ $1 ]]; then
+case $1 in
+"${valid_commands[@]}") ;;
+*)
     echo -en "\e[31mError: Unknown command '$1'\e[0m\n"
     usage
     exit 1
-fi
+    ;;
+esac
