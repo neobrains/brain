@@ -23,9 +23,8 @@ curl -sL https://raw.githubusercontent.com/neobrains/brain/main/install.sh | bas
 Use `brain` / `brain -h` / `brain --help` / `brain help` to get a list of all available commands.
 
 ```sh
-🕙 10:27:14 ❯ brain --help
 Usage: brain [options] [command]
-brain version v0.0.3.5
+brain version v0.0.4
 Options:
   -h, --help      Show this help message and exit
   -v, --version   Show version and exit
@@ -36,10 +35,7 @@ Commands:
   install         Install a package
   uninstall       Uninstall a package
   update          Update a package
-  upgrade         Upgrade the cli
-  search          Search for a package
-  list            List installed packages
-  info            Show information about a package
+  neurons         List (all / locally installed) / search / info about packages
 
 For more information, visit https://github.com/neobrains/brain
 ```
