@@ -23,9 +23,17 @@ usage() {
     echo "  install         Install a package"
     echo "  uninstall       Uninstall a package"
     echo "  update          Update a package"
-    echo "  upgrade         Upgrade the cli"
+    echo "  neurons         List (all / locally installed) / search / info about packages"
+    echo ""
+    echo "For more information, visit https://github.com/neobrains/brain"
+}
+
+neurons_usage() {
+    echo "Usage: $(basename "$0") [options] [command]"
+    echo "Commands:"
+    echo "  list all        List all available packages"
+    echo "  list installed  List locally installed packages"
     echo "  search          Search for a package"
-    echo "  list            List installed packages"
     echo "  info            Show information about a package"
     echo ""
     echo "For more information, visit https://github.com/neobrains/brain"
@@ -82,6 +90,62 @@ if [[ $1 =~ (-r|--remove) ]]; then
         fi
         printf "\e[32mbrain has been removed.\e[0m\n"
     fi
+fi
+
+if [[ $1 =~ (neurons) ]]; then
+    if [ -z "$2" ]; then
+        echo -e "\e[31mError: You must provide a command to neurons\e[0m"
+        neurons_usage
+        exit 1
+    fi
+
+    case "$2" in
+    "list")
+        if [ -z "$3" ]; then
+            echo -e "\e[31mError: You must provide a package name to list\e[0m"
+            neurons_usage
+            exit 1
+        fi
+        case "$3" in
+        "all")
+            echo "not implemented yet"
+            ;;
+        "installed")
+            echo "not implemented yet"
+            ;;
+        *)
+            echo -e "\e[31mError: Unknown command '$3'\e[0m"
+            neurons_usage
+            exit 1
+            ;;
+        esac
+        ;;
+    "search")
+
+        if [ -z "$3" ]; then
+            echo -e "\e[31mError: You must provide a package name to search\e[0m"
+            neurons_usage
+            exit 1
+        fi
+
+        echo "not implemented yet"
+        ;;
+    "info")
+        if [ -z "$3" ]; then
+            echo -e "\e[31mError: You must provide a package name to info\e[0m"
+            neurons_usage
+            exit 1
+        fi
+
+        echo "not implemented yet"
+        ;;
+    *)
+        echo -e "\e[31mError: Unknown command '$2'\e[0m"
+        neurons_usage
+        exit 1
+        ;;
+    esac
+    exit 0
 fi
 
 if [[ $1 =~ (install|update|uninstall) ]]; then
