@@ -25,10 +25,7 @@ unpack() {
   echo "Done."
 }
 
-if [[ $1 =~ (-install) ]]; then
-  echo "Downloading Discord $LATEST_VERSION..."
-  unpack
-elif [[ $1 =~ (-update) ]]; then
+update() {
   echo "Checking for updates..."
   if [[ "$LATEST_VERSION" == "$CURRENT_VERSION" ]]; then
     echo "Discord is already up to date ($CURRENT_VERSION)."
@@ -37,6 +34,24 @@ elif [[ $1 =~ (-update) ]]; then
     echo "Updating Discord $CURRENT_VERSION -> $LATEST_VERSION"
     unpack
   fi
+}
+
+if [[ $1 =~ (-install) ]]; then
+  # check if current version is 0.0.0 ( which means not installed )
+  if [[ "$CURRENT_VERSION" == "0.0.0" ]]; then
+    echo "Installing Discord..."
+    unpack
+  else
+    echo "Discord is already installed ($CURRENT_VERSION)."
+    read -r -p "Do you want to update discord? (y/n) " answer
+    if [[ $answer =~ ^([yY][eE][sS]|[yY])$ ]]; then
+      update
+    fi
+  fi
+  echo "Downloading Discord $LATEST_VERSION..."
+  unpack
+elif [[ $1 =~ (-update) ]]; then
+  update
 elif [[ $1 =~ (-uninstall) ]]; then
   if pgrep Discord >/dev/null; then
     pkill -9 Discord

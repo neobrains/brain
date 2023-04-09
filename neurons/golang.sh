@@ -65,10 +65,7 @@ unpack() {
     echo "Done."
 }
 
-if [[ $1 =~ (-install) ]]; then
-    echo "Downloading Go $LATEST_VERSION..."
-    unpack
-elif [[ $1 =~ (-update) ]]; then
+update() {
     echo "Checking for updates..."
     if [[ "$LATEST_VERSION" == "$CURRENT_VERSION" ]]; then
         echo "Go is already up to date ($CURRENT_VERSION)."
@@ -77,6 +74,21 @@ elif [[ $1 =~ (-update) ]]; then
         echo "Updating Go $CURRENT_VERSION -> $LATEST_VERSION"
         unpack
     fi
+}
+
+if [[ $1 =~ (-install) ]]; then
+    if [[ "$CURRENT_VERSION" == "go" ]]; then
+        echo "Installing Go..."
+        unpack
+    else
+        echo "Go is already installed ($CURRENT_VERSION)."
+        read -r -p "Do you want to update Go? (y/n) " answer
+        if [[ $answer =~ ^([yY][eE][sS]|[yY])$ ]]; then
+            update
+        fi
+    fi
+elif [[ $1 =~ (-update) ]]; then
+    update
 elif [[ $1 =~ (-uninstall) ]]; then
     echo "Removing Go ($CURRENT_VERSION)"
     if [ -d "/usr/local/go" ]; then
