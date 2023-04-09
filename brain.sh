@@ -23,7 +23,7 @@ usage() {
     echo "  install         Install a package"
     echo "  uninstall       Uninstall a package"
     echo "  update          Update a package"
-    echo "  neurons         List (all / locally installed) / search / info about packages"
+    echo "  neurons         List (all / installed) / search / info about packages"
     echo ""
     echo "For more information, visit https://github.com/neobrains/brain"
 }
@@ -93,10 +93,9 @@ if [[ $1 =~ (-r|--remove) ]]; then
 fi
 
 if [[ $1 =~ (neurons) ]]; then
-    if [ -z "$2" ]; then
-        echo -e "\e[31mError: You must provide a command to neurons\e[0m"
+    if [[ $# -eq 0 || $2 =~ (-h|--help|help) ]]; then
         neurons_usage
-        exit 1
+        exit 0
     fi
 
     case "$2" in
