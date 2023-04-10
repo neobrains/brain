@@ -44,15 +44,21 @@ case "$1" in
     echo "Installing package..."
     $PACKAGE_MANAGER_INSTALL_CMD
     rm -f ./microsoft-edge-stable_*.deb
+    echo "Done!"
     ;;
 -update)
     if [ -z "$PACKAGE_MANAGER" ]; then
         echo "Unknown package manager"
         exit 1
     fi
-    echo "Updating package list..."
+    echo "Updating package..."
+    if [ ! -f "$(basename "$URL")" ]; then
+        echo "Downloading package..."
+        curl -O "$URL"
+    fi
     $PACKAGE_MANAGER_UPDATE_CMD
     rm -f ./microsoft-edge-stable_*.deb
+    echo "Done!"
     ;;
 -uninstall)
     if [ -z "$PACKAGE_MANAGER" ]; then
@@ -61,6 +67,7 @@ case "$1" in
     fi
     echo "Uninstalling package..."
     $PACKAGE_MANAGER_UNINSTALL_CMD
+    echo "Done!"
     ;;
 *)
     echo "Usage: $0 {-install | -update | -uninstall}"
