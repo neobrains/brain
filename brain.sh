@@ -70,7 +70,7 @@ if [[ $1 =~ (-u|--upgrade) ]]; then
         if [ ! -d "$brain_dir" ]; then
             mkdir "$brain_dir"
         fi
-        latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | jq -r '.tag_name')
+        latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | grep -o '"tag_name": "[^"]*"' | cut -d'"' -f4)
         echo "$latest_version" >"$VERSION_FILE"
         sudo mv brain /usr/local/bin/
         printf "\e[32mbrain has been updated.\e[0m\n"
