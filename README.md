@@ -4,7 +4,7 @@ Yet another unix package manager written in bash.
 
 ## Why?
 
-Yes , we know you got flatpak, but we wanted to create our own package manager , though it will not support many packages , but it will support the packages that have issues with flatpak. For example , with flatpak installed discord / vscode there are some known issues , but with brain installed discord / vscode there are no issues as we install then using the tar.gz / deb / rpm / etc. files.
+Our package manager is designed to address issues that may arise when using packages installed through Flatpak. While Flatpak aims to enhance desktop security through sandboxing, this can sometimes lead to complications when using certain applications. To overcome these issues, our package manager allows for direct installation of packages using formats such as .tar.gz, .deb, and .rpm. By simplifying the installation process, we make it easier for users to install and use these packages without encountering the same issues that can occur with Flatpak.
 
 ## Installation
 
@@ -35,12 +35,15 @@ Commands:
   install         Install a package
   uninstall       Uninstall a package
   update          Update a package
-  neurons         List (all / locally installed) / search / info about packages
+  neurons         List (all / installed) / search / info about packages
 
 For more information, visit https://github.com/neobrains/brain
 ```
 
 _note that these maybe not be the latest commands and some are not implemented as of now_
+
+## Package requests and issues
+If you want to ask support for any package or you are are facing an issue, please open an issue or join our [Discord](https://discord.gg/xEEpJvE9py) server.
 
 ## Contribution
 
