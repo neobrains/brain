@@ -37,16 +37,11 @@ update() {
 }
 
 if [[ $1 =~ (-install) ]]; then
-  # check if current version is 0.0.0 ( which means not installed )
   if [[ "$CURRENT_VERSION" == "0.0.0" ]]; then
     echo "Installing Discord..."
     unpack
   else
-    echo "Discord is already installed ($CURRENT_VERSION)."
-    read -r -p "Do you want to update discord? (y/n) " answer
-    if [[ $answer =~ ^([yY][eE][sS]|[yY])$ ]]; then
-      update
-    fi
+    echo "Discord is already installed ($CURRENT_VERSION). If you want to update use brain update <name>."
   fi
   echo "Downloading Discord $LATEST_VERSION..."
   unpack

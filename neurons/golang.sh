@@ -81,11 +81,7 @@ if [[ $1 =~ (-install) ]]; then
         echo "Installing Go..."
         unpack
     else
-        echo "Go is already installed ($CURRENT_VERSION)."
-        read -r -p "Do you want to update Go? (y/n) " answer
-        if [[ $answer =~ ^([yY][eE][sS]|[yY])$ ]]; then
-            update
-        fi
+        echo "Go is already installed ($CURRENT_VERSION). If you want to update use brain update <name>"
     fi
 elif [[ $1 =~ (-update) ]]; then
     update

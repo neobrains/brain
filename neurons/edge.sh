@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ARCH=$(uname -m)
-PACKAGE_MANAGER=
 PACKAGE_MANAGER_UPDATE_CMD=
 PACKAGE_MANAGER_INSTALL_CMD=
 PACKAGE_MANAGER_UNINSTALL_CMD=
@@ -9,13 +8,11 @@ PACKAGE_MANAGER_UNINSTALL_CMD=
 case "$ARCH" in
 x86_64 | amd64)
     if [ -x "$(command -v dpkg)" ]; then
-        PACKAGE_MANAGER="apt-get"
         PACKAGE_MANAGER_UPDATE_CMD="sudo dpkg -i ./microsoft-edge-stable_*.deb"
         PACKAGE_MANAGER_INSTALL_CMD="sudo dpkg -i ./microsoft-edge-stable_*.deb"
         PACKAGE_MANAGER_UNINSTALL_CMD="sudo apt remove microsoft-edge-stable"
         URL=$(curl -s https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/ | grep -o '<a href="[^"]*deb"' | grep -o '[^"]*deb' | sort -V | tail -n 1 | awk '{print "https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/"$0}')
     elif [ -x "$(command -v rpm)" ]; then
-        PACKAGE_MANAGER="dnf"
         PACKAGE_MANAGER_UPDATE_CMD="sudo rpm -i ./microsoft-edge-stable_*.rpm"
         PACKAGE_MANAGER_INSTALL_CMD="sudo rpm -U ./microsoft-edge-stable_*.rpm"
         PACKAGE_MANAGER_UNINSTALL_CMD="sudo rpm -e microsoft-edge-stable"
@@ -33,10 +30,6 @@ esac
 
 case "$1" in
 -install)
-    if [ -z "$PACKAGE_MANAGER" ]; then
-        echo "Unknown package manager"
-        exit 1
-    fi
     if [ ! -f "$(basename "$URL")" ]; then
         echo "Downloading package..."
         curl -O "$URL"
@@ -47,11 +40,19 @@ case "$1" in
     echo "Done!"
     ;;
 -update)
-    if [ -z "$PACKAGE_MANAGER" ]; then
-        echo "Unknown package manager"
-        exit 1
-    fi
     echo "Updating package..."
+    if [ "$ARCH" = "amd64" ]; then
+        VERSION_URL=$(curl -s https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/ | grep -o '<a href="[^"]*deb"' | grep -o '[^"]*deb' | sort -V | tail -n 1)
+        LATEST_WEB_VERSION=$(basename "$VERSION_URL" | grep -oP "(?<=microsoft-edge-stable_)\d+(\.\d+)+(-\d+)?")
+        LATEST_LOCAL_VERSION=$(dpkg -s microsoft-edge-stable | grep Version | awk '{print $2}')
+    fi
+    echo "Latest web version: $LATEST_WEB_VERSION"
+    echo "Latest local version: $LATEST_LOCAL_VERSION"
+    if [ "$LATEST_WEB_VERSION" = "$LATEST_LOCAL_VERSION" ]; then
+        echo "Already up to date!"
+        exit 0
+    fi
+
     if [ ! -f "$(basename "$URL")" ]; then
         echo "Downloading package..."
         curl -O "$URL"
@@ -61,10 +62,6 @@ case "$1" in
     echo "Done!"
     ;;
 -uninstall)
-    if [ -z "$PACKAGE_MANAGER" ]; then
-        echo "Unknown package manager"
-        exit 1
-    fi
     echo "Uninstalling package..."
     $PACKAGE_MANAGER_UNINSTALL_CMD
     echo "Done!"

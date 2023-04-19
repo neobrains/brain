@@ -52,11 +52,7 @@ if [[ $1 =~ (-install) ]]; then
     echo "Installing Visual Studio Code..."
     unpack
   else
-    echo "Visual Studio Code is already installed ($CURRENT_VERSION)."
-    read -r -p "Do you want to update Visual Studio Code? (y/n) " answer
-    if [[ $answer =~ ^([yY][eE][sS]|[yY])$ ]]; then
-      update
-    fi
+    echo "Visual Studio Code is already installed ($CURRENT_VERSION). If you want to update use brain update <name>"
   fi
 elif [[ $1 =~ (-update) ]]; then
   update
