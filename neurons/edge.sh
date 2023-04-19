@@ -13,8 +13,8 @@ x86_64 | amd64)
         PACKAGE_MANAGER_UNINSTALL_CMD="sudo apt remove microsoft-edge-stable"
         URL=$(curl -s https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/ | grep -o '<a href="[^"]*deb"' | grep -o '[^"]*deb' | sort -V | tail -n 1 | awk '{print "https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/"$0}')
     elif [ -x "$(command -v rpm)" ]; then
-        PACKAGE_MANAGER_UPDATE_CMD="sudo rpm -i ./microsoft-edge-stable_*.rpm"
-        PACKAGE_MANAGER_INSTALL_CMD="sudo rpm -U ./microsoft-edge-stable_*.rpm"
+        PACKAGE_MANAGER_UPDATE_CMD="sudo rpm -i ./microsoft-edge-stable-*.rpm"
+        PACKAGE_MANAGER_INSTALL_CMD="sudo rpm -U ./microsoft-edge-stable-*.rpm"
         PACKAGE_MANAGER_UNINSTALL_CMD="sudo rpm -e microsoft-edge-stable"
         URL=$(curl -s https://packages.microsoft.com/yumrepos/edge/Packages/m/ | grep -o '<a href="[^"]*rpm"' | grep -o '[^"]*rpm' | sort -V | tail -n 1 | awk '{print "https://packages.microsoft.com/yumrepos/edge/Packages/m/"$0}')
     else
