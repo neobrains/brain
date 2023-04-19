@@ -45,6 +45,9 @@ case "$1" in
         VERSION_URL=$(curl -s https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/ | grep -o '<a href="[^"]*deb"' | grep -o '[^"]*deb' | sort -V | tail -n 1)
         LATEST_WEB_VERSION=$(basename "$VERSION_URL" | grep -oP "(?<=microsoft-edge-stable_)\d+(\.\d+)+(-\d+)?")
         LATEST_LOCAL_VERSION=$(dpkg -s microsoft-edge-stable | grep Version | awk '{print $2}')
+    elif [ -x "$(command -v rpm)" ]; then
+        echo "Soon..."
+        exit 1
     fi
     echo "Latest web version: $LATEST_WEB_VERSION"
     echo "Latest local version: $LATEST_LOCAL_VERSION"
