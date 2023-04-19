@@ -41,7 +41,7 @@ case "$1" in
     ;;
 -update)
     echo "Updating package..."
-    if [ "$ARCH" = "amd64" ]; then
+    if [ -x "$(command -v dpkg)" ]; then
         VERSION_URL=$(curl -s https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/ | grep -o '<a href="[^"]*deb"' | grep -o '[^"]*deb' | sort -V | tail -n 1)
         LATEST_WEB_VERSION=$(basename "$VERSION_URL" | grep -oP "(?<=microsoft-edge-stable_)\d+(\.\d+)+(-\d+)?")
         LATEST_LOCAL_VERSION=$(dpkg -s microsoft-edge-stable | grep Version | awk '{print $2}')
