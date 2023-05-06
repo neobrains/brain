@@ -24,7 +24,7 @@ check_sudo() {
 
 echo -e "Installing brain..."
 
-latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | jq -r '.tag_name')
+latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | grep -o '"tag_name": "v[^"]*"' | grep -o 'v[^"]*' | cut -d '"' -f1)
 
 if [ -x "$brain_bin" ]; then
   if [[ "$(brain --version)" == *"$latest_version"* ]]; then
