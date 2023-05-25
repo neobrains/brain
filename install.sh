@@ -22,9 +22,20 @@ check_sudo() {
   fi
 }
 
+check_jq_installed() {
+  if ! command -v jq &>/dev/null; then
+    echo -e "${RED}Error: jq is not installed. Please install jq to continue.${NC}"
+    echo -e "On apt based systems, you can install it using: sudo apt install jq"
+    echo -e "For more information, visit https://stedolan.github.io/jq"
+    exit 1
+  fi
+}
+
+check_jq_installed
+
 echo -e "Installing brain..."
 
-latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | grep -o '"tag_name": "v[^"]*"' | grep -o 'v[^"]*' | cut -d '"' -f1)
+latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | jq -r '.tag_name')
 
 if [ -x "$brain_bin" ]; then
   if [[ "$(brain --version)" == *"$latest_version"* ]]; then
