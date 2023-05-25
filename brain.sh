@@ -9,7 +9,6 @@ NC='\033[0m'
 readonly BRAIN_DIR="$HOME/.brain"
 readonly VERSION_FILE="$HOME/.brain/version"
 readonly _BRAIN_BIN="/usr/local/bin/brain"
-readonly NEURONS_GIT="https://raw.githubusercontent.com/neobrains/brain/main/neurons"
 readonly RAW_URI="https://raw.githubusercontent.com/neobrains/brain/main"
 
 valid_commands=("install" "uninstall" "update" "upgrade" "search" "list" "info")
@@ -191,7 +190,7 @@ if [[ $1 =~ (install|update|uninstall) ]]; then
         exit 1
     fi
 
-    script=$(curl -sL "$NEURONS_GIT/$2.sh")
+    script=$(curl -sL "$RAW_URI/neurons/$2.sh")
 
     if [ "$script" == "404: Not Found" ]; then
         echo -e "${RED}Error: Package '$2' not found${NC}"
