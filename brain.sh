@@ -4,7 +4,7 @@ set -e
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-NC='\033[0m'
+NC='\033[0m' # stands for No Color
 
 readonly BRAIN_DIR="$HOME/.brain"
 readonly VERSION_FILE="$HOME/.brain/version"
@@ -133,7 +133,7 @@ if [[ $1 =~ (neurons) ]]; then
         fi
         case "$3" in
         "remote")
-            echo -e "Available packages:\n"
+            echo -e "${GREEN}Available packages:${NC}\n"
             printf "%-30s %s\n" "Name" "Description"
             NEURONS=$(curl -s https://api.github.com/repos/neobrains/brain/contents/neurons | jq -r '.[].name')
             NEURONS_DESCRIPTION=$(curl -s https://raw.githubusercontent.com/neobrains/brain/main/descriptions.json)
