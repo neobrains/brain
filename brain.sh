@@ -7,7 +7,7 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 
 readonly brain_dir="$HOME/.brain"
-readonly VERSION_FILE=~/.brain/version
+readonly VERSION_FILE="$HOME/.brain/version"
 readonly _brain_bin="/usr/local/bin/brain"
 readonly neurons_git="https://raw.githubusercontent.com/neobrains/brain/main/neurons"
 readonly brain_url="https://raw.githubusercontent.com/neobrains/brain/main/brain.sh"
@@ -76,7 +76,7 @@ if [[ $1 =~ (-u|--upgrade) ]]; then
         latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | jq -r '.tag_name')
         echo "$latest_version" >"$VERSION_FILE"
         sudo mv brain /usr/local/bin/
-        printf "\e[32mbrain has been updated.${NC}\n"
+        printf "${GREEN}brain has been updated.${NC}\n"
     }
     update_brain
     exit 0
@@ -91,7 +91,7 @@ if [[ $1 =~ (-r|--remove) ]]; then
         if [ -d ~/.brain ]; then
             sudo rm -rf ~/.brain
         fi
-        printf "\e[32mbrain has been removed.${NC}\n"
+        printf "${GREEN}brain has been removed.${NC}\n"
     fi
 fi
 
