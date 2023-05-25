@@ -110,10 +110,16 @@ if [[ $1 =~ (neurons) ]]; then
         fi
         case "$3" in
         "remote")
-            echo "Available packages:\n"
-            echo "<package-name> : <package-description>"
+            echo -e "Available packages:\n"
+            printf "%-30s %s\n" "Name" "Description"
             NEURONS=$(curl -s https://api.github.com/repos/neobrains/brain/contents/neurons | jq -r '.[].name')
-            
+            NEURONS_DESCRIPTION=$(curl -s https://raw.githubusercontent.com/neobrains/brain/main/descriptions.json)
+
+            for package in $NEURONS; do
+                package_name=$(echo "$package" | sed 's/\.sh$//')
+                description=$(echo $NEURONS_DESCRIPTION | jq -r ".$package_name")
+                printf "%-30s %s\n" "$package_name" "$description"
+            done
             ;;
         "local")
             echo "not implemented yet"
