@@ -6,38 +6,62 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-readonly brain_dir="$HOME/.brain"
+readonly BRAIN_DIR="$HOME/.brain"
 readonly VERSION_FILE="$HOME/.brain/version"
-readonly _brain_bin="/usr/local/bin/brain"
-readonly neurons_git="https://raw.githubusercontent.com/neobrains/brain/main/neurons"
-readonly brain_url="https://raw.githubusercontent.com/neobrains/brain/main/brain.sh"
+readonly _BRAIN_BIN="/usr/local/bin/brain"
+readonly NEURONS_GIT="https://raw.githubusercontent.com/neobrains/brain/main/neurons"
+readonly RAW_URI="https://raw.githubusercontent.com/neobrains/brain/main"
 
 valid_commands=("install" "uninstall" "update" "upgrade" "search" "list" "info")
 
 usage() {
+    declare -A options
+    options["-h, --help"]="Show this help message and exit"
+    options["-v, --version"]="Show version and exit"
+    options["-u, --upgrade"]="Update brain to the latest version"
+    options["-f, --force"]="Force update brain to the latest version"
+    options["-r, --remove"]="Remove brain from your system"
+
+    declare -A commands
+    commands["install"]="Install a package"
+    commands["uninstall"]="Uninstall a package"
+    commands["update"]="Update a package"
+    commands["neurons"]="List (local / remote) / search / info about packages"
+
     echo "Usage: $(basename "$0") [options] [command]"
     echo "brain version $(cat "$VERSION_FILE")"
     echo "Options:"
-    echo "  -h, --help      Show this help message and exit"
-    echo "  -v, --version   Show version and exit"
-    echo "  -u, --upgrade   Update brain to the latest version"
-    echo "  -f, --force     Force update brain to the latest version"
-    echo "  -r, --remove    Remove brain from your system"
+
+    for opt in "${!options[@]}"; do
+        printf "  %-20s %s\n" "$opt" "${options[$opt]}"
+    done
+
     echo "Commands:"
-    echo "  install         Install a package"
-    echo "  uninstall       Uninstall a package"
-    echo "  update          Update a package"
-    echo "  neurons         List (local / remote) / search / info about packages"
+
+    for cmd in "${!commands[@]}"; do
+        printf "  %-20s %s\n" "$cmd" "${commands[$cmd]}"
+    done
+
     echo ""
     echo "For more information, visit https://github.com/neobrains/brain"
 }
 
 neurons_usage() {
-    echo "Usage: $(basename "$0") [options] [command]"
+    declare -A commands
+
+    commands["list remote"]="List all available packages"
+    commands["list local"]="List locally installed packages"
+    commands["info"]="Show information about a package"
+
+    declare -r script_name=$(basename "$0")
+
+    echo "Usage: $script_name [options] [command]"
     echo "Commands:"
-    echo "  list remote     List all available packages"
-    echo "  list local      List locally installed packages"
-    echo "  info            Show information about a package"
+
+    for cmd in "${!commands[@]}"; do
+        printf "  %-15s %s\n" "$cmd" "${commands[$cmd]}"
+    done
+
     echo ""
     echo "For more information, visit https://github.com/neobrains/brain"
 }
@@ -68,10 +92,10 @@ if [[ $1 =~ (-u|--upgrade) ]]; then
     update_brain() {
         echo "Updating brain..."
         check_sudo
-        curl -fsSL -o brain $brain_url
+        curl -fsSL -o brain "${RAW_URI}/brain.sh"
         chmod +x brain
-        if [ ! -d "$brain_dir" ]; then
-            mkdir "$brain_dir"
+        if [ ! -d "$BRAIN_DIR" ]; then
+            mkdir "$BRAIN_DIR"
         fi
         latest_version=$(curl -s https://api.github.com/repos/neobrains/brain/releases/latest | jq -r '.tag_name')
         echo "$latest_version" >"$VERSION_FILE"
@@ -167,7 +191,7 @@ if [[ $1 =~ (install|update|uninstall) ]]; then
         exit 1
     fi
 
-    script=$(curl -sL "$neurons_git/$2.sh")
+    script=$(curl -sL "$NEURONS_GIT/$2.sh")
 
     if [ "$script" == "404: Not Found" ]; then
         echo -e "${RED}Error: Package '$2' not found${NC}"
