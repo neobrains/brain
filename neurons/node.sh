@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# https://nodejs.org/dist/v18.16.0/node-v18.16.0-linux-x64.tar.xz
-# https://nodejs.org/dist/v18.16.0/node-v18.16.0-linux-armv7l.tar.xz
-# https://nodejs.org/dist/v18.16.0/node-v18.16.0-linux-arm64.tar.xz
-
 set -e
 
 VERSIONS_JSON=$(curl -sL https://nodejs.org/dist/index.json)
