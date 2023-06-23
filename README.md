@@ -33,7 +33,7 @@ Options:
   -r, --remove    Remove brain from your system
 Commands:
   install         Install a package
-  uninstall       Uninstall a package
+  remove          Remove a package
   update          Update a package
   neurons         List (all / installed) / search / info about packages
 

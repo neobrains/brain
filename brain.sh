@@ -23,7 +23,7 @@ usage() {
 
     declare -A commands
     commands["install"]="Install a package"
-    commands["uninstall"]="Uninstall a package"
+    commands["remove"]="Remove a package"
     commands["update"]="Update a package"
     commands["neurons"]="List (local / remote) / search / info about packages"
 
@@ -172,7 +172,7 @@ if [[ $1 =~ (neurons) ]]; then
     exit 0
 fi
 
-if [[ $1 =~ (install|update|uninstall) ]]; then
+if [[ $1 =~ (install|update|remove) ]]; then
     case "$1" in
     "install")
         action="-install"
@@ -180,8 +180,13 @@ if [[ $1 =~ (install|update|uninstall) ]]; then
     "update")
         action="-update"
         ;;
-    *)
+    "remove")
         action="-uninstall"
+        ;;
+    *)
+        echo -e "${RED}Error: Unknown command '$1'${NC}"
+        usage
+        exit 1
         ;;
     esac
     if [ -z "$2" ]; then
