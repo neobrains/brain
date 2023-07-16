@@ -43,8 +43,6 @@ if [[ $1 =~ (-install) ]]; then
   else
     echo "Discord is already installed ($CURRENT_VERSION). If you want to update use brain update <name>."
   fi
-  echo "Downloading Discord $LATEST_VERSION..."
-  unpack
 elif [[ $1 =~ (-update) ]]; then
   update
 elif [[ $1 =~ (-uninstall) ]]; then
