@@ -2,7 +2,7 @@
 
 set -e
 
-LATEST_VERSION=$(curl -sL https://go.dev/VERSION?m=text)
+LATEST_VERSION=$(curl -sL "https://go.dev/dl/?mode=json" | jq -r '.[0].version')
 CURRENT_VERSION=$(cat /usr/local/go/brain_version 2>/dev/null) || CURRENT_VERSION="go"
 
 arch=$(uname -m)
