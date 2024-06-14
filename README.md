@@ -1,4 +1,4 @@
-# brain
+# Brain 🧠
 
 Yet another unix package manager written in bash.
 
@@ -7,12 +7,6 @@ Yet another unix package manager written in bash.
 Our package manager is designed to address issues that may arise when using packages installed through Flatpak. While Flatpak aims to enhance desktop security through sandboxing, this can sometimes lead to complications when using certain applications. To overcome these issues, our package manager allows for direct installation of packages using formats such as .tar.gz, .deb, and .rpm. By simplifying the installation process, we make it easier for users to install and use these packages without encountering the same issues that can occur with Flatpak.
 
 ## Installation
-
-```bash
-curl -sL https://neobrains.dev/brain | bash
-```
-
-or
 
 ```bash
 curl -sL https://raw.githubusercontent.com/neobrains/brain/main/install.sh | bash
